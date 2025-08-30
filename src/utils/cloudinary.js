@@ -13,15 +13,19 @@ import fs from 'fs'
                 return null
             }
             //uploading file on cloudinary
-            cloudinary.uploader.upload(localFilePath, {
+            const response=await cloudinary.uploader.upload(localFilePath, {
                 resource_type:'auto'
             })
 
             //file has been uploaded success fully
-            console.log('file has been uploaded on cloudinary', response.url);
+            fs.unlinkSync(localFilePath)
             return response;
             
-        } catch (error) {
+        }
+        catch (error) {
             fs.unlinkSync(localFilePath) //remove the locally saved temporaryfile
+            return null
         }
     }
+
+export {uploadOnCloudinary}
